@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Device Info Tracker</title>
+</head>
+<body style="font-family: Arial; text-align:center; margin-top:50px;">
+  <h2>Visitor Info</h2>
+  <p id="info">Loading...</p>
+  
+  <script>
+    // Browser & device info
+    let details = `
+      Browser: ${navigator.appName}<br>
+      User Agent: ${navigator.userAgent}<br>
+      Platform: ${navigator.platform}<br>
+      Language: ${navigator.language}<br>
+    `;
+    
+    document.getElementById("info").innerHTML = details;
+
+    // IP fetch
+    fetch("https://api.ipify.org?format=json")
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("info").innerHTML += "IP Address: " + d.ip + "<br>";
+      });
+
+    // Location (agar permission mile)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        document.getElementById("info").innerHTML += `
+          Location: Lat ${pos.coords.latitude}, Lon ${pos.coords.longitude}
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
